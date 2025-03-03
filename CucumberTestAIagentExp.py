@@ -279,9 +279,9 @@ def lambda_handler(event, context):
             body = event['body']
 
         # Validate story_topic
-        promtMessage = body.get('prompt_messsage')
+        promtMessage = body.get('body').get('prompt_messsage')
         # Extract and minify open_api_spec
-        open_api_spec_minified = json.dumps(event["open_api_spec"], separators=(",", ":"))
+        open_api_spec_minified = json.dumps(body.get('open_api_spec'), separators=(",", ":"))
 
         # Concatenate promtMessage and open_api_spec_minified
         concatenated_message = promtMessage + open_api_spec_minified
@@ -300,8 +300,8 @@ def lambda_handler(event, context):
             }
 
         # Generate story
-        #test_cases = testfile_generator(promtMessage=promtMessage)
-        test_cases = concatenated_message
+        test_cases = testfile_generator(promtMessage=concatenated_message)
+        #test_cases = concatenated_message
         if not test_cases:
             return {
                 'statusCode': 500,
@@ -328,7 +328,7 @@ def lambda_handler(event, context):
                 }
             
             #send email
-            ses_response = send_email_with_attachment(s3_bucket, s3_response['s3_key'], event['recipient-email'])
+            ses_response = send_email_with_attachment(s3_bucket, s3_response['s3_key'], body.get('recipient-email'))
             if not ses_response['success']:
                 logger.error(f"Failed to send email: {ses_response.get('error')}")
                 return {
