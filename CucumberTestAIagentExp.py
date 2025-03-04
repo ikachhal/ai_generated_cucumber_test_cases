@@ -164,7 +164,7 @@ def send_email_with_attachment(bucket_name, file_name, recipient_email) -> dict:
     sender = "info@adwicorp.com"  # Sender email (must be verified in SES)
     recipient = recipient_email  # Recipient email
     reply_to_email = "ina.kachhal@gmail.com"  # Different reply-to email
-    subject = "AI-Powered Test Case Generation | Resume & GitHub Link Attached"
+    subject = "Ina Kachhal | AI-Powered Test Case Generation | Resume & GitHub Link"
 
     # Create email message
     msg = MIMEMultipart()
